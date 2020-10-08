@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
 
@@ -22,9 +22,23 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'//material design google
+    implementation 'com.github.florent37:shapeofview:1.3.2'//diseños chulos
+    implementation 'de.hdodenhof:circleimageview:3.1.0'//imagen circular
+    implementation 'com.google.firebase:firebase-auth:19.4.0'//firebase atuthentication
+    implementation 'com.google.firebase:firebase-database:19.4.0'//firebase database real time
+    implementation 'com.google.firebase:firebase-firestore:21.2.1'//firebase database cloud
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'//sign in google
+    implementation 'com.google.firebase:firebase-storage:19.1.1'//firebase storage
+    implementation 'id.zelory:compressor:2.1.0'//comprimir archivos
+    implementation 'com.squareup.picasso:picasso:2.5.2'//manejar imagenes//traer imagenes desde url
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'//dialogos espera
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
