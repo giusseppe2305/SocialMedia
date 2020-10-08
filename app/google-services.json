@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "247782995849",
+    "firebase_url": "https://social-me-51a73.firebaseio.com",
+    "project_id": "social-me-51a73",
+    "storage_bucket": "social-me-51a73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247782995849:android:c93ac98d9764402c525358",
+        "android_client_info": {
+          "package_name": "com.optic.socialmedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247782995849-b5pskr84jdcsiejkhkvf34icu4v14243.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.optic.socialmedia",
+            "certificate_hash": "22be98fa7adeed2f503f31e5fec1113c98e359de"
+          }
+        },
+        {
+          "client_id": "247782995849-nsf3gevsii03o72t2nk1trn7g2k6ptdg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Zk6UQ-y6Zbv2wLeH18UhIVupgVv25C0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247782995849-nsf3gevsii03o72t2nk1trn7g2k6ptdg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
