@@ -2,6 +2,7 @@ package com.optic.socialmedia.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,7 +21,6 @@ import com.optic.socialmedia.fragments.ProfileFragment;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView mBottomNavigationView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

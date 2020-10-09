@@ -136,15 +136,30 @@
         android:backgroundTint="@color/colorAccent"
         android:text="Finalizar"
         android:textColor="@color/white" />
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageProfileCompleteProfile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="130dp"
-        android:layout_gravity="top|center"
-        android:src="@drawable/ic_person_grey"
-        app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="5dp"
-        app:civ_circle_background_color="@color/white"/>
 
+    <FrameLayout
+        android:layout_gravity="top|center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageProfileCompleteProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_person_grey"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="5dp"
+            app:civ_circle_background_color="@color/white"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/editImageProfileCompleteProfile"
+            android:layout_gravity="bottom|right"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_edit"
+            app:civ_circle_background_color="@color/colorPrimary"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp"
+            />
+
+    </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

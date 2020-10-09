@@ -1,25 +1,42 @@
 package com.optic.socialmedia.models;
 
+import java.util.List;
+
 public class Post {
     String id;
     String title;
     String description;
-    String image1;
-    String image2;
+    private long timestamp;
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     String category;
     String idUser;
-
-    public Post(String id, String title, String description, String image1, String image2, String category, String idUser) {
+    List<String> images;
+    public Post(String id, String title, String description,  String category, String idUser) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.image1 = image1;
-        this.image2 = image2;
+
         this.category = category;
         this.idUser = idUser;
     }
 
     public Post() {
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public String getId() {
@@ -44,22 +61,6 @@ public class Post {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getImage1() {
-        return image1;
-    }
-
-    public void setImage1(String image1) {
-        this.image1 = image1;
-    }
-
-    public String getImage2() {
-        return image2;
-    }
-
-    public void setImage2(String image2) {
-        this.image2 = image2;
     }
 
     public String getCategory() {

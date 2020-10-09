@@ -9,11 +9,35 @@ public class User implements Serializable {
     String pass;
     String apellidos;
     String edad;
+    String imageProfile;
 
+    public String getImageProfile() {
+        return imageProfile;
+    }
+
+    public void setImageProfile(String imageProfile) {
+        this.imageProfile = imageProfile;
+    }
+
+    private long timestamp;
     public User(String email, String pass) {
 
         this.email = email;
         this.pass = pass;
+    }
+
+    public User(String name, String lastName, String age) {
+        nombre=name;
+        apellidos=lastName;
+        edad=age;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getApellidos() {
@@ -35,7 +59,6 @@ public class User implements Serializable {
     public User() {
 
     }
-
 
     public String getPass() {
         return pass;

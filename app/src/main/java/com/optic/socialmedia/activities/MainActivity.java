@@ -95,6 +95,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.existSession()){
+            startActivity(new Intent(MainActivity.this,HomeActivity.class));
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,9 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             checkUserExist(task.getResult().getUser().getUid());
-                            startActivity(new Intent(MainActivity.this,HomeActivity.class));
                         } else {
                             Toast.makeText(MainActivity.this, "No se pudo iniciar con google "+task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }

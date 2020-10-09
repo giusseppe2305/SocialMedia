@@ -1,5 +1,9 @@
 package com.optic.socialmedia.providers;
 
+import android.content.Context;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -35,12 +39,20 @@ public class AuthProviders {
         return auth.getCurrentUser() != null;
     }
 
-    public void logOut() {
+    public void logOut(Context context) {
         auth.signOut();
+        GoogleSignIn.getClient(
+                context,
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        ).signOut();
+
+
     }
 
     public Task logInGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         return auth.signInWithCredential(credential);
     }
+
+
 }

@@ -14,62 +14,43 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="80dp"
             android:background="@color/colorAccent"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="23dp"
                 android:text="Crear Publicacion"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="40dp"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="15dp">
-
-                    <ImageView
-                        android:id="@+id/uploadImage1Post"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_photo" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="15dp">
-
-                    <ImageView
-                        android:id="@+id/uploadImage2Post"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_photo"
-                        android:scaleType="centerCrop"/>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorAccent"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            >
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_photo"
+                android:id="@+id/btnAddImagePost"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -273,19 +254,20 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnPublishPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Publicar"
         android:layout_gravity="bottom"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/colorAccent"
-        android:textColor="@color/white"
-        android:layout_marginBottom="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:id="@+id/btnPublishPost"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:enabled="false"
+        android:text="Publicar"
 
-        android:enabled="false"/>
+        android:textColor="@color/white" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/btnBack"
         android:layout_width="40dp"

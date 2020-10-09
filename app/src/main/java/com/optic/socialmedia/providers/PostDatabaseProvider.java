@@ -4,14 +4,21 @@ package com.optic.socialmedia.providers;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.optic.socialmedia.models.Post;
 
 public class PostDatabaseProvider {
     CollectionReference mCollection;
+
     public PostDatabaseProvider() {
-        mCollection= FirebaseFirestore.getInstance().collection("Posts");
+        mCollection = FirebaseFirestore.getInstance().collection("Posts");
     }
-    public Task<Void> save(Post mPost){
+
+    public Task<Void> save(Post mPost) {
         return mCollection.document().set(mPost);
+    }
+
+    public Query getAll() {
+      return   mCollection.orderBy("title",Query.Direction.DESCENDING);
     }
 }
