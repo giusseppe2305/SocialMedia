@@ -40,7 +40,8 @@ dependencies {
     implementation 'com.github.d-max:spots-dialog:1.1@aar'//dialogos espera
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'///conectar y usar datos firestore database
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'//mapeador
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'//tratar imagenes
+    implementation 'com.github.smarteist:autoimageslider:1.3.9'//Slider
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -48,7 +48,7 @@ public class AuthProviders {
 
 
     }
-
+   
     public Task logInGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         return auth.signInWithCredential(credential);

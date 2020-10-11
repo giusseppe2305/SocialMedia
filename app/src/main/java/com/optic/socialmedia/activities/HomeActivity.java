@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-
+        openFragment(new HomeFragment());
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =

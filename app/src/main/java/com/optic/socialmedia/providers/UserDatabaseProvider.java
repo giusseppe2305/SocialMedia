@@ -32,6 +32,7 @@ public class UserDatabaseProvider {
     public Task<DocumentSnapshot> getUser(String id){
         return database.document(id).get();
     }
+
     public Task<Void> updateUser(String id, User user){
         Map<String,Object> update = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL).convertValue(user, Map.class);
 

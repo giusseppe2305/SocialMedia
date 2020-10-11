@@ -227,9 +227,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         subirFoto();
-                        Intent i = new Intent(CompleteProfileActivity.this, HomeActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
+
                         Toast.makeText(CompleteProfileActivity.this, "Registrado database normal ", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(CompleteProfileActivity.this, "Ha habido un error database " + task.getException(), Toast.LENGTH_LONG).show();
@@ -247,20 +245,7 @@ public class CompleteProfileActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         subirFoto();
-                        mUser.setId(mAuth.getIdCurrentUser());
-                        mUserProvider.createUser(mUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Intent i = new Intent(CompleteProfileActivity.this, HomeActivity.class);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(i);
-                                    Toast.makeText(CompleteProfileActivity.this, "Registrado database normal ", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(CompleteProfileActivity.this, "Ha habido un error database " + task.getException(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+
                         Toast.makeText(CompleteProfileActivity.this, "Usuario registrado Authentication", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(CompleteProfileActivity.this, "Ha habido un error AUTHENTICATION " + task.getException(), Toast.LENGTH_LONG).show();
@@ -283,6 +268,22 @@ public class CompleteProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             mUser.setImageProfile(uri.toString());
+                            //////CREATE USER EN DATABASE FIRESTORE
+                            mUser.setId(mAuth.getIdCurrentUser());
+                            mUserProvider.createUser(mUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+
+                                        Intent i = new Intent(CompleteProfileActivity.this, HomeActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(i);
+                                        Toast.makeText(CompleteProfileActivity.this, "Registrado database normal ", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(CompleteProfileActivity.this, "Ha habido un error database " + task.getException(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

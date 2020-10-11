@@ -11,16 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+
         >
         <include layout="@layout/action_toolbar" />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recyclerViewHomreFragment">
-
-
-        </androidx.recyclerview.widget.RecyclerView>
+            android:id="@+id/recyclerViewHomreFragment"/>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHomeFragment"

@@ -16,6 +16,7 @@
         <item name ="colorControlNormal" >@color/colorAccent</item>
         <item name ="colorControlActivated" >@color/colorPrimaryDark</item>
         <item name ="android:textSize" >21sp</item>
+        <item name="shape_roundRect_borderColor">@color/colorAccent</item>
     </style>
     <style name="ToolbarName" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/white</item>

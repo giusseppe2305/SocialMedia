@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.ProfileDetailActivity"></activity>
+        <activity android:name=".activities.PostDetailActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

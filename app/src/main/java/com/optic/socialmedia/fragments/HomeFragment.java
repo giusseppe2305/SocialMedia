@@ -28,6 +28,7 @@ import com.optic.socialmedia.activities.PostActivity;
 import com.optic.socialmedia.adapters.PostsAdapter;
 import com.optic.socialmedia.models.Post;
 import com.optic.socialmedia.providers.AuthProviders;
+import com.optic.socialmedia.providers.LikesDatabaseProvider;
 import com.optic.socialmedia.providers.PostDatabaseProvider;
 
 
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     private AuthProviders mAuthProvider;
     PostDatabaseProvider mPostProvider;
     PostsAdapter mPostAdapter;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -47,6 +49,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mAuthProvider=new AuthProviders();
+
         mView = inflater.inflate(R.layout.fragment_home, container, false);
         mFab=mView.findViewById(R.id.fabHomeFragment);
         mFab.setOnClickListener(new View.OnClickListener() {
