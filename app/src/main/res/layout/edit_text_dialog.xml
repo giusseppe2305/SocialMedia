@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+        <EditText
+            android:id="@+id/editTextDialog"
+            android:inputType="textMultiLine"
+            android:hint="Introduce un comentario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/button_border"
+            android:padding="10dp"
+            />
+
+
+</LinearLayout>
