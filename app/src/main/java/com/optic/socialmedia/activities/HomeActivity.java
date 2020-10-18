@@ -18,18 +18,25 @@ import com.optic.socialmedia.fragments.ChatFragment;
 import com.optic.socialmedia.fragments.FiltersFragment;
 import com.optic.socialmedia.fragments.HomeFragment;
 import com.optic.socialmedia.fragments.ProfileFragment;
+import com.optic.socialmedia.providers.AuthProviders;
+import com.optic.socialmedia.providers.TokenProvider;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView mBottomNavigationView;
+    TokenProvider mTokenProvider;
+    AuthProviders mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        mTokenProvider=new TokenProvider();
+        mAuth=new AuthProviders();
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(new HomeFragment());
+        createToken();
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -60,5 +67,8 @@ public class HomeActivity extends AppCompatActivity {
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+    private void createToken(){
+        mTokenProvider.create(mAuth.getIdCurrentUser());
     }
 }

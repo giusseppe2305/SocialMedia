@@ -1,7 +1,9 @@
 package com.optic.socialmedia.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,20 +23,32 @@ import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.optic.socialmedia.R;
 import com.optic.socialmedia.adapters.CommentsAdapter;
 import com.optic.socialmedia.adapters.SliderAdapter;
 import com.optic.socialmedia.models.Comment;
+import com.optic.socialmedia.models.FCMBody;
+import com.optic.socialmedia.models.FCMResponse;
+import com.optic.socialmedia.models.Like;
 import com.optic.socialmedia.models.SliderModel;
 import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.CommentDatabaseProvider;
+import com.optic.socialmedia.providers.LikesDatabaseProvider;
+import com.optic.socialmedia.providers.NotificationProvider;
 import com.optic.socialmedia.providers.PostDatabaseProvider;
+import com.optic.socialmedia.providers.TokenProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.RelativeTime;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -41,13 +56,18 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostDetailActivity extends AppCompatActivity {
+
     ScrollView barraScroll;
-    private CircleImageView btnBack;
     private SliderView sliderView;
     private SliderAdapter adapter;
     private PostDatabaseProvider mPostProvider;
@@ -63,6 +83,8 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textCategory;
     TextView textNameProfilePost;
     TextView textAgeProfilePost;
+    TextView countLikes;
+    TextView textTimeAgoPost;
     private  EditText textEditTextDialog;
     UserDatabaseProvider mUserProvider;
     private String idUserOwnPostSelected;
@@ -70,27 +92,35 @@ public class PostDetailActivity extends AppCompatActivity {
     RecyclerView commentsRecyclerView;
     private CommentsAdapter mCommentAdpter;
     private View mView;
+    private LikesDatabaseProvider mLikeProvider;
+    private Toolbar mToolbar;
+    private TokenProvider mTokenProvier;
+    private NotificationProvider mNotificationProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
 
-
+        mTokenProvier= new TokenProvider();
+        mNotificationProvider=new NotificationProvider();
+        mLikeProvider= new LikesDatabaseProvider();
         mCommentProvider=new CommentDatabaseProvider();
         mAuth=new AuthProviders();
         mUserProvider = new UserDatabaseProvider();
         mPostProvider = new PostDatabaseProvider();
         idPost = getIntent().getStringExtra("idPost");
 
-
+        mToolbar=findViewById(R.id.toolbarTransparent);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
         commentsRecyclerView=findViewById(R.id.commentsRecyclerViewPostDetail);
         LinearLayoutManager linear= new LinearLayoutManager(this);
         commentsRecyclerView.setLayoutManager(linear);
 
 
-        btnBack = findViewById(R.id.btnBack);
         sliderView = findViewById(R.id.sliderPostDetail);
         btnPutComment = findViewById(R.id.btnCommentPostDetail);
         ivPhotoProfie = findViewById(R.id.ivPhotoProfilePostDetail);
@@ -100,6 +130,8 @@ public class PostDetailActivity extends AppCompatActivity {
         textCategory = findViewById(R.id.categoryPostDetail);
         textNameProfilePost = findViewById(R.id.nameUserPostDetail);
         textAgeProfilePost = findViewById(R.id.ageUserPostDetail);
+        textTimeAgoPost = findViewById(R.id.timeAgoPostDetail);
+        countLikes = findViewById(R.id.countLikes);
 
         listImagesSlider = new ArrayList<>();
 
@@ -116,12 +148,7 @@ public class PostDetailActivity extends AppCompatActivity {
         // sliderView.setAutoCycle(true);
         //sliderView.startAutoCycle();
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         btnSeeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,11 +191,34 @@ public class PostDetailActivity extends AppCompatActivity {
 
 
         cargarDatosPost();
+        cargarLikesPost();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return true;
+    }
+
+    private void cargarLikesPost() {
+        mLikeProvider.getLikesOfPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value==null){
+                    Toast.makeText(PostDetailActivity.this, "Error al cargar el numero de likes", Toast.LENGTH_SHORT).show();
+                }else{
+                    countLikes.setText(String.valueOf(value.size())+" likes");
+                }
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        Query query=mCommentProvider.getAllOfPost(idPost);///comprobar no sea nulo
+        Query query=mCommentProvider.getAllCommentsByPost(idPost);///comprobar no sea nulo
         if(query!=null){
             FirestoreRecyclerOptions<Comment> options= new FirestoreRecyclerOptions.Builder<Comment>().setQuery(query,Comment.class).build();
             System.out.println("tamañoooooo" +options.getSnapshots().size());
@@ -179,15 +229,15 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         if(mCommentAdpter!=null){
             mCommentAdpter.stopListening();
         }
     }
-    private void createComment() {
+    public void createComment() {
 
-        Comment mComment=new Comment();
+        final Comment mComment=new Comment();
         mComment.setComment(textEditTextDialog.getText().toString());
         mComment.setIdUser(mAuth.getIdCurrentUser());
         mComment.setTimestamp(new Date().getTime());
@@ -197,10 +247,58 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(PostDetailActivity.this, "COMENTARIO SE REALIZO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
-
+                    sendNotification(mComment);
                 }else{
                     Toast.makeText(PostDetailActivity.this, "FALLO AL PONER EL COMENTARIO", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+    }
+
+    private void sendNotification(final Comment mComment) {
+        if(idUserOwnPostSelected==null){
+            return;
+        }
+        mTokenProvier.getToken(idUserOwnPostSelected).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    final String tokenUserOwnPost=documentSnapshot.getString("token");
+                    if(tokenUserOwnPost!=null){
+                        Map<String,String> data= new HashMap<>();
+                        data.put("title","Nuevo comentario");
+                        data.put("body",mComment.getComment());
+                        FCMBody body=new FCMBody(tokenUserOwnPost,"high","4500s",data);
+                        mNotificationProvider.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+                            @Override
+                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                if(response.body()!=null){
+                                    System.out.println(response.body().getSuccess());
+                                    if(response.body().getSuccess()==1){
+                                        Toast.makeText(PostDetailActivity.this, "La Notificacion se envio correctamente", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(PostDetailActivity.this, "1 Fallo al enviar notificaciones "+response.message()+" - "+call.request().method(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(PostDetailActivity.this, " 2 Fallo al enviar notificaciones "+response.message()+" - "+response.errorBody(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }else{
+                        Toast.makeText(PostDetailActivity.this, "El token del usuario no existe", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PostDetailActivity.this, "Fallo el gete token", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -223,6 +321,8 @@ public class PostDetailActivity extends AppCompatActivity {
                     textDescription.setText(description);
                     textTitle.setText(title);
 
+                    textTimeAgoPost.setText(RelativeTime.getTimeAgo(document.getLong("timestamp")));
+
                     ///cargamos las imagenes en el slider
                     List<String> group = (List<String>) document.get("images");
                     for (String it : group) {
@@ -239,10 +339,16 @@ public class PostDetailActivity extends AppCompatActivity {
                                 DocumentSnapshot userPostSelected = task.getResult();
                                 String age = userPostSelected.get("edad").toString();
                                 String name = userPostSelected.get("nombre").toString();
-                                String imageProfie=userPostSelected.get("imageProfile").toString();
+
+
+
+                                Object urlImage = userPostSelected.get("imageProfile");
+                                if (urlImage != null) {
+                                    Picasso.with(PostDetailActivity.this).load(urlImage.toString()).into(ivPhotoProfie);
+
+                                }
 
                                 textAgeProfilePost.setText(age);
-                                Picasso.with(PostDetailActivity.this).load(imageProfie).into(ivPhotoProfie);
                                 textNameProfilePost.setText(name);
                             } else {
                                 Toast.makeText(PostDetailActivity.this, "Error al traer los datos del perfil que creo el posts", Toast.LENGTH_SHORT).show();

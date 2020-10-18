@@ -10,5 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:theme="@style/ToolbarName"
-        />
+
+        >
+
+    </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>

@@ -21,11 +21,11 @@ public class CommentDatabaseProvider {
         return mCollection.document().set(comment);
     }
 
-    public Query getAllOfPost(String idPost) {
-      return   mCollection.whereEqualTo("idPost",idPost);
+    public Query getAllCommentsByPost(String idPost) {
+      return   mCollection.whereEqualTo("idPost",idPost).orderBy("timestamp", Query.Direction.DESCENDING);
     }
 
-    public Task<DocumentSnapshot> getPost(String idComment){
+    public Task<DocumentSnapshot> getComment(String idComment){
         return mCollection.document(idComment).get();
     }
 

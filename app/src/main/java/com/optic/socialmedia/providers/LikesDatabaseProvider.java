@@ -5,6 +5,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.optic.socialmedia.models.Like;
 
@@ -21,11 +22,11 @@ public class LikesDatabaseProvider {
         return doc.set(mLike);
     }
 
-    public Task<QuerySnapshot> existLikeOnPostFromUser(String user, String post){
+    public Task<QuerySnapshot> getLikeOfPostAndUser(String user, String post){
        return mCollection.whereEqualTo("idPost",post).whereEqualTo("idUser",user).get();
     }
-    public Task<QuerySnapshot> getCountLikePost(String post){
-        return mCollection.whereEqualTo("idPost",post).get();
+    public Query getLikesOfPost(String post){
+        return mCollection.whereEqualTo("idPost",post);
     }
     public void deleteLike(String id){
         System.out.println("borrarrr like  "+id);

@@ -42,6 +42,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'//mapeador
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'//tratar imagenes
     implementation 'com.github.smarteist:autoimageslider:1.3.9'//Slider
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'//notificaciones
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'//hacer solicitudes http
+    implementation 'com.squareup.retrofit2:converter-scalars:2.4.0'//hacer solicitudes http
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'//hacer solicitudes http
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

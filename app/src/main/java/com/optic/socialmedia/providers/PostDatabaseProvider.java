@@ -32,4 +32,9 @@ public class PostDatabaseProvider {
     public Task<QuerySnapshot> getPostFromUser(String idUserToSee) {
         return mCollection.whereEqualTo("idUser",idUserToSee).get();
     }
+
+    public Query getPostByCategoryAndTimestamp(String optionFilterSelected) {
+
+        return mCollection.whereEqualTo("category",optionFilterSelected).orderBy("timestamp", Query.Direction.ASCENDING);
+    }
 }

@@ -2,12 +2,15 @@ package com.optic.socialmedia.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +20,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,48 +42,66 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileDetailActivity extends AppCompatActivity {
     TextView textName,textEmail,textAge,textCountPosts;
-    CircleImageView ivPhotoProfile,btnBack;
+    CircleImageView ivPhotoProfile;
     UserDatabaseProvider mUserProvider;
     PostDatabaseProvider mPostProvider;
     private String idUserToSee;
-
-
-
+    FloatingActionButton btnChat;
+    private Toolbar mToolbar;
+    AuthProviders mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
         idUserToSee=getIntent().getStringExtra("idUserToSee");
-
+        mAuth=new AuthProviders();
         mUserProvider=new UserDatabaseProvider();
         mPostProvider=new PostDatabaseProvider();
 
 
-
-
+        btnChat = findViewById(R.id.btnChat);
         textName=findViewById(R.id.nameProfileDetail);
         textEmail=findViewById(R.id.emailProfileDetail);
         textAge=findViewById(R.id.ageProfileDetail);
         textCountPosts=findViewById(R.id.countPostProfileDetail);
         ivPhotoProfile=findViewById(R.id.ivPhotoProfileDetail);
-        btnBack=findViewById(R.id.btnBack);
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        mToolbar=findViewById(R.id.toolbarTransparent);
+
+       setSupportActionBar(mToolbar);
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setTitle("");
+        if (mAuth.getIdCurrentUser().equals(idUserToSee)) {
+            btnChat.setEnabled(false);
+        }
+
+        btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                goToChatActivity();
             }
         });
-
-
         cargarDatosFromUser();
         loadDataFromPosts();
 
 
     }
 
+    private void goToChatActivity()
+    {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("idUserToChat", idUserToSee);
+        startActivity(intent);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+        }
+        return true ;
+    }
 
     private void loadDataFromPosts() {
         mPostProvider.getPostFromUser(idUserToSee).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -103,13 +125,14 @@ public class ProfileDetailActivity extends AppCompatActivity {
                     String name= selectedProfile.get("nombre").toString();
                     String apellidos= selectedProfile.get("apellidos").toString();
                     String edad= selectedProfile.get("edad").toString();
-                    String imageProfile= selectedProfile.get("imageProfile").toString();
                     String email= selectedProfile.get("email").toString();
-
+                    Object urlImage = selectedProfile.get("imageProfile");
+                    if (urlImage != null) {
+                        Picasso.with(ProfileDetailActivity.this).load(urlImage.toString()).into(ivPhotoProfile);
+                    }
                     textAge.setText(edad);
                     textName.setText(name+" "+apellidos);
                     textEmail.setText(email);
-                    Picasso.with(ProfileDetailActivity.this).load(imageProfile).into(ivPhotoProfile);
                 }else{
                     Toast.makeText(ProfileDetailActivity.this, "Ha habido un error al cargar los datos del perfil seleccionado", Toast.LENGTH_SHORT).show();
                 }

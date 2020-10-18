@@ -220,9 +220,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 nombre.setText(documentSnapshot.get("nombre").toString());
                 apellidos.setText(documentSnapshot.get("apellidos").toString());
                 edad.setText(documentSnapshot.get("edad").toString());
-                String url = documentSnapshot.get("imageProfile").toString();
+                Object url = documentSnapshot.get("imageProfile");
                 if (url != null) {
-                    Picasso.with(EditProfileActivity.this).load(url).into(ivPhotoProfile);
+                    Picasso.with(EditProfileActivity.this).load(url.toString()).into(ivPhotoProfile);
                 }
 
             }
