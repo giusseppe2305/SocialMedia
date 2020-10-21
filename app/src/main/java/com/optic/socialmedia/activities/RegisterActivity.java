@@ -17,10 +17,11 @@ import com.optic.socialmedia.R;
 import com.optic.socialmedia.models.User;
 import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends MyAppCompactActivity {
     CircleImageView btnBack;
     TextInputEditText txtEmail;
     TextInputEditText txtPass;

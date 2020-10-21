@@ -21,6 +21,7 @@ import com.google.android.material.transition.Hold;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.optic.socialmedia.R;
 import com.optic.socialmedia.activities.FiltersActivity;
@@ -38,6 +39,11 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
     private final LikesDatabaseProvider mLikeProvider;
     final Context context;
     private TextView mTextViewNumberFilter;
+    private ListenerRegistration escuchaConstanteCambioNumeroLikesPost;
+
+    public ListenerRegistration getEscuchaConstanteCambioNumeroLikesPost() {
+        return escuchaConstanteCambioNumeroLikesPost;
+    }
 
     public PostsAdapter(Context c, @NonNull FirestoreRecyclerOptions<Post> options) {
         super(options);
@@ -113,11 +119,11 @@ public class PostsAdapter extends FirestoreRecyclerAdapter<Post, PostsAdapter.Vi
     }
 
     private void setCountsLikeOfPost(final ViewHolder holder, String postId) {
-        mLikeProvider.getLikesOfPost(postId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        escuchaConstanteCambioNumeroLikesPost = mLikeProvider.getLikesOfPost(postId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value == null) {
-                    Toast.makeText(context, "Error al cargar el numero de likes", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "Error al cargar el numero de likes " + holder.title.getText().toString(), Toast.LENGTH_SHORT).show();
                 } else {
                     holder.countLikes.setText(String.valueOf(value.size()));
                 }

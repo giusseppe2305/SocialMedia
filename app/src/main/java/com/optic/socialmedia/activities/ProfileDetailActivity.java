@@ -33,6 +33,7 @@ import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.CommentDatabaseProvider;
 import com.optic.socialmedia.providers.PostDatabaseProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.BreakIterator;
@@ -40,7 +41,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileDetailActivity extends AppCompatActivity {
+public class ProfileDetailActivity extends MyAppCompactActivity {
     TextView textName,textEmail,textAge,textCountPosts;
     CircleImageView ivPhotoProfile;
     UserDatabaseProvider mUserProvider;

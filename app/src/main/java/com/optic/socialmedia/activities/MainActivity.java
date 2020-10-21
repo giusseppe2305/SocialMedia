@@ -28,8 +28,9 @@ import com.optic.socialmedia.R;
 import com.optic.socialmedia.models.User;
 import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MyAppCompactActivity {
     private static final int REQUEST_CODE_GOOGLE = 1;
     Button btnLogin;
     TextView txtRegisterNow;

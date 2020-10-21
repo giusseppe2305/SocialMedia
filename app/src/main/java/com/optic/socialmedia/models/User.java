@@ -10,7 +10,26 @@ public class User implements Serializable {
     String apellidos;
     String edad;
     String imageProfile;
+    boolean online;
+    long lastConnection;
 
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public long getLastConnection() {
+        return lastConnection;
+    }
+
+    public void setLastConnection(long lastConnection) {
+        this.lastConnection = lastConnection;
+    }
+
+    private long timestamp;
     public String getImageProfile() {
         return imageProfile;
     }
@@ -19,7 +38,7 @@ public class User implements Serializable {
         this.imageProfile = imageProfile;
     }
 
-    private long timestamp;
+
     public User(String email, String pass) {
 
         this.email = email;

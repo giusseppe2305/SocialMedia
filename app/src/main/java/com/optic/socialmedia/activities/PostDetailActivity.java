@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.optic.socialmedia.R;
@@ -48,6 +49,7 @@ import com.optic.socialmedia.providers.NotificationProvider;
 import com.optic.socialmedia.providers.PostDatabaseProvider;
 import com.optic.socialmedia.providers.TokenProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 import com.optic.socialmedia.utils.RelativeTime;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -65,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PostDetailActivity extends AppCompatActivity {
+public class PostDetailActivity extends MyAppCompactActivity {
 
     ScrollView barraScroll;
     private SliderView sliderView;
@@ -96,6 +98,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TokenProvider mTokenProvier;
     private NotificationProvider mNotificationProvider;
+    private ListenerRegistration escuchadorLikes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +198,14 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(escuchadorLikes!=null){
+            escuchadorLikes.remove();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==android.R.id.home){
             finish();
@@ -203,7 +214,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void cargarLikesPost() {
-        mLikeProvider.getLikesOfPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        escuchadorLikes =mLikeProvider.getLikesOfPost(idPost).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(value==null){

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -102,12 +103,22 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.itemLogOutMenu:mAuthProvider.logOut(getContext());
+
                 Intent intent= new Intent(getContext(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mPostAdapter.getEscuchaConstanteCambioNumeroLikesPost()!=null){
+            //Toast.makeText(getContext(), "Destruir likess", Toast.LENGTH_SHORT).show();
+            mPostAdapter.getEscuchaConstanteCambioNumeroLikesPost().remove();
+        }
     }
 
     @Override

@@ -29,13 +29,14 @@ import com.optic.socialmedia.providers.ImageProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
 import com.optic.socialmedia.utils.FileUtil;
 import com.optic.socialmedia.utils.Intents;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends MyAppCompactActivity {
     private static final int REQUEST_CODE_INTENT_GALLERY = 1;
     private static final int REQUEST_CODE_INTENT_TAKE_PHOTO = 2;
     TextInputEditText nombre;

@@ -39,6 +39,7 @@ import com.optic.socialmedia.providers.ImageProvider;
 import com.optic.socialmedia.providers.PostDatabaseProvider;
 import com.optic.socialmedia.recyclerview.MainAdapter;
 import com.optic.socialmedia.utils.FileUtil;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,7 @@ import java.util.concurrent.ExecutionException;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 
-public class PostActivity extends AppCompatActivity {
+public class PostActivity extends MyAppCompactActivity {
     private static final int REQUEST_CODE_INTENT_GALLERY = 1;
     private static final int REQUEST_CODE_INTENT_TAKE_PHOTO = 2;
     ImageView ivPS4, ivPC, ivXBOX;
@@ -167,6 +168,8 @@ public class PostActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     private void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

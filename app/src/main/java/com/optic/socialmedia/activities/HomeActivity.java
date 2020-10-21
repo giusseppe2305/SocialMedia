@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,16 +21,20 @@ import com.optic.socialmedia.fragments.HomeFragment;
 import com.optic.socialmedia.fragments.ProfileFragment;
 import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.TokenProvider;
+import com.optic.socialmedia.providers.UserDatabaseProvider;
+import com.optic.socialmedia.utils.MyAppCompactActivity;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends MyAppCompactActivity {
     BottomNavigationView mBottomNavigationView;
     TokenProvider mTokenProvider;
     AuthProviders mAuth;
+    UserDatabaseProvider mUserProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        mUserProvider=new UserDatabaseProvider();
         mTokenProvider=new TokenProvider();
         mAuth=new AuthProviders();
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -38,6 +43,9 @@ public class HomeActivity extends AppCompatActivity {
         openFragment(new HomeFragment());
         createToken();
     }
+
+
+
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
