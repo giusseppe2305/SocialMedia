@@ -2,7 +2,6 @@ package com.optic.socialmedia.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,7 +27,7 @@ import com.optic.socialmedia.providers.AuthProviders;
 import com.optic.socialmedia.providers.ImageProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
 import com.optic.socialmedia.utils.FileUtil;
-import com.optic.socialmedia.utils.Intents;
+import com.optic.socialmedia.utils.Util;
 import com.optic.socialmedia.utils.MyAppCompactActivity;
 import com.squareup.picasso.Picasso;
 
@@ -97,10 +96,10 @@ public class EditProfileActivity extends MyAppCompactActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0) {
-                            Intents.openGallery(EditProfileActivity.this,REQUEST_CODE_INTENT_GALLERY);
+                            Util.openGallery(EditProfileActivity.this,REQUEST_CODE_INTENT_GALLERY);
                         } else {
 
-                            Intents.takePhoto(EditProfileActivity.this,currentPhotoProfile,REQUEST_CODE_INTENT_TAKE_PHOTO);
+                            Util.takePhoto(EditProfileActivity.this,currentPhotoProfile,REQUEST_CODE_INTENT_TAKE_PHOTO);
                         }
                     }
                 })

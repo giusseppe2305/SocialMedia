@@ -51,6 +51,7 @@ import com.optic.socialmedia.providers.TokenProvider;
 import com.optic.socialmedia.providers.UserDatabaseProvider;
 import com.optic.socialmedia.utils.MyAppCompactActivity;
 import com.optic.socialmedia.utils.RelativeTime;
+import com.optic.socialmedia.utils.Util;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -271,47 +272,48 @@ public class PostDetailActivity extends MyAppCompactActivity {
         if(idUserOwnPostSelected==null){
             return;
         }
-        mTokenProvier.getToken(idUserOwnPostSelected).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    final String tokenUserOwnPost=documentSnapshot.getString("token");
-                    if(tokenUserOwnPost!=null){
-                        Map<String,String> data= new HashMap<>();
-                        data.put("title","Nuevo comentario");
-                        data.put("body",mComment.getComment());
-                        FCMBody body=new FCMBody(tokenUserOwnPost,"high","4500s",data);
-                        mNotificationProvider.sendNotification(body).enqueue(new Callback<FCMResponse>() {
-                            @Override
-                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                                if(response.body()!=null){
-                                    System.out.println(response.body().getSuccess());
-                                    if(response.body().getSuccess()==1){
-                                        Toast.makeText(PostDetailActivity.this, "La Notificacion se envio correctamente", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        Toast.makeText(PostDetailActivity.this, "1 Fallo al enviar notificaciones "+response.message()+" - "+call.request().method(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    Toast.makeText(PostDetailActivity.this, " 2 Fallo al enviar notificaciones "+response.message()+" - "+response.errorBody(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<FCMResponse> call, Throwable t) {
-
-                            }
-                        });
-                    }else{
-                        Toast.makeText(PostDetailActivity.this, "El token del usuario no existe", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PostDetailActivity.this, "Fallo el gete token", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Util.sendNotification(this,idUserOwnPostSelected,"Nuevo comentario",mComment.getComment());
+//        mTokenProvier.getToken(idUserOwnPostSelected).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if(documentSnapshot.exists()){
+//                    final String tokenUserOwnPost=documentSnapshot.getString("token");
+//                    if(tokenUserOwnPost!=null){
+//                        Map<String,String> data= new HashMap<>();
+//                        data.put("title","Nuevo comentario");
+//                        data.put("body",mComment.getComment());
+//                        FCMBody body=new FCMBody(tokenUserOwnPost,"high","4500s",data);
+//                        mNotificationProvider.sendNotification(body).enqueue(new Callback<FCMResponse>() {
+//                            @Override
+//                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+//                                if(response.body()!=null){
+//                                    System.out.println(response.body().getSuccess());
+//                                    if(response.body().getSuccess()==1){
+//                                        Toast.makeText(PostDetailActivity.this, "La Notificacion se envio correctamente", Toast.LENGTH_SHORT).show();
+//                                    }else{
+//                                        Toast.makeText(PostDetailActivity.this, "1 Fallo al enviar notificaciones "+response.message()+" - "+call.request().method(), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }else{
+//                                    Toast.makeText(PostDetailActivity.this, " 2 Fallo al enviar notificaciones "+response.message()+" - "+response.errorBody(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+//
+//                            }
+//                        });
+//                    }else{
+//                        Toast.makeText(PostDetailActivity.this, "El token del usuario no existe", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(PostDetailActivity.this, "Fallo el gete token", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 

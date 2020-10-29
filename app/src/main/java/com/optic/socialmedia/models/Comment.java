@@ -57,4 +57,15 @@ public class Comment {
         this.idPost = idPost;
         this.timestamp = timestap;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id='" + id + '\'' +
+                ", comment='" + comment + '\'' +
+                ", idUser='" + idUser + '\'' +
+                ", idPost='" + idPost + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
